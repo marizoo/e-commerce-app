@@ -1,6 +1,7 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { ArrowLeftOutlined, ArrowRightOutlined } from '@material-ui/icons'
 import styled from 'styled-components'
+import {sliderItems} from "../data"
 
 
 const Cont = styled.div`
@@ -27,11 +28,15 @@ right: ${props => props.direction === "right" && "10px"};
 margin: auto;
 cursor: pointer;
 opacity: 0.5;
+z-index: 2;
 `
 
 const Wrapper = styled.div`
 height: 100%;
 display: flex;
+transition: all 1.5s ease;
+transform: translateX(${(props) => props.slideIndex * -100}vw);
+
 `
 
 const Slide = styled.div`
@@ -81,47 +86,39 @@ cursor: pointer;
 
 
 const Slider = () => {
+
+    const [slideIndex, setSlideIndex] = useState(0)
+
+    const handleClick = (direction) => {
+
+        if(direction === "left") {
+            setSlideIndex(slideIndex > 0 ? slideIndex - 1 : 2)
+        } else {
+            setSlideIndex(slideIndex < 2 ? slideIndex + 1 : 0)
+        }
+    };
+
     return (
         <Cont>
-            <Arrow direction="left">
+            <Arrow direction="left" onClick={() => handleClick("left")}>
                 <ArrowLeftOutlined />
             </Arrow>
-            <Wrapper>
-                {/* SLIDE 1 */}
-                <Slide bg="f5fafd">
+            <Wrapper slideIndex={slideIndex}>
+                {sliderItems.map((item) => (
+                    <Slide bg={item.bg} key={item.id}>
                     <ImgCont>
-                        <Img src="./img/kid-girl.png" alt="a little girl smiling"/>
+                        <Img src={item.img} alt={item.title}/>
                     </ImgCont>
                     <InfoCont>
-                        <Title>SUMMER SALE</Title>
-                        <Desc>DON'T COMPROMISE ON STYLE! GET FLAT 30% OFF FOR NEW ARRIVALS.</Desc>
+                        <Title>{item.title}</Title>
+                        <Desc>{item.desc}</Desc>
                         <Button>SHOP NOW</Button>
                     </InfoCont>
                 </Slide>
-                {/* SLIDE 2 */}
-                <Slide bg="fcf1ed">
-                    <ImgCont>
-                        <Img src="./img/kid-girl.png" alt="a little girl smiling"/>
-                    </ImgCont>
-                    <InfoCont>
-                        <Title>SUMMER SALE</Title>
-                        <Desc>DON'T COMPROMISE ON STYLE! GET FLAT 30% OFF FOR NEW ARRIVALS.</Desc>
-                        <Button>SHOP NOW</Button>
-                    </InfoCont>
-                </Slide>
-                {/* SLIDE 3 */}
-                <Slide bg="fbf0f4">
-                    <ImgCont>
-                        <Img src="./img/kid-girl.png" alt="a little girl smiling"/>
-                    </ImgCont>
-                    <InfoCont>
-                        <Title>SUMMER SALE</Title>
-                        <Desc>DON'T COMPROMISE ON STYLE! GET FLAT 30% OFF FOR NEW ARRIVALS.</Desc>
-                        <Button>SHOP NOW</Button>
-                    </InfoCont>
-                </Slide>
+                    ))}
+               
             </Wrapper>
-            <Arrow direction="right">
+            <Arrow direction="right" onClick={() => handleClick("right")}>
                 <ArrowRightOutlined />
             </Arrow>
         </Cont>
