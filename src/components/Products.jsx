@@ -1,24 +1,22 @@
-import React from 'react'
-import styled from 'styled-components'
-import Product from './Product'
-import { popularProducts } from '../data'
+import styled from "styled-components";
+import { popularProducts } from "../data";
+import Product from "./Product";
 
-const Cont = styled.div`
-padding: 20px;
-display: flex;
-flex-wrap: wrap;
-justify-content: space-between;
-`
+const Container = styled.div`
+    padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+`;
 
 const Products = () => {
-    return (
-        <Cont>
-            {popularProducts.map(item => (
+  return (
+    <Container>
+      {popularProducts.map((item) => (
+        <Product item={item} key={item.id} />
+      ))}
+    </Container>
+  );
+};
 
-            <Product item={item} key={item.id}/>
-            ))}
-        </Cont>
-    )
-}
-
-export default Products
+export default Products;
